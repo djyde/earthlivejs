@@ -5,6 +5,8 @@ A NodeJS re-authored of [EarthLiveSharp](https://github.com/bitdust/EarthLiveSha
 
 Fetch photo of the earth every 5 minutes from [himawari-8](http://himawari8.nict.go.jp/) ([wiki](https://en.wikipedia.org/wiki/Himawari_8)).
 
+![](http://ww4.sinaimg.cn/large/4b263fe4gw1ez0msoaobij218g0wytg2.jpg)
+
 ## Installation
 
 1.  Clone this repository
