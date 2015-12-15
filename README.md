@@ -12,7 +12,7 @@ Fetch photo of the earth every 5 minutes from [himawari-8](http://himawari8.nict
 1.  Clone this repository
 
     ```sh
-    git clone https://github.com/xingrz/earthlivejs.git
+    git clone https://github.com/oxoooo/earthlivejs.git
     cd earthlivejs
     ```
 

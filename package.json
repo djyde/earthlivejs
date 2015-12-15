@@ -9,18 +9,18 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/xingrz/earthlivejs.git"
+    "url": "git+https://github.com/oxoooo/earthlivejs.git"
   },
   "keywords": [
     "earth",
     "live"
   ],
-  "author": "XiNGRZ <chenxingyu92@gmail.com>",
+  "author": "XiNGRZ <xxx@oxo.ooo>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/xingrz/earthlivejs/issues"
+    "url": "https://github.com/oxoooo/earthlivejs/issues"
   },
-  "homepage": "https://github.com/xingrz/earthlivejs#readme",
+  "homepage": "https://github.com/oxoooo/earthlivejs#readme",
   "dependencies": {
     "async": "^1.5.0",
     "canvas": "^1.3.5",
