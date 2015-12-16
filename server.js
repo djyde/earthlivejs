@@ -47,9 +47,12 @@ function fetch () {
     }
   }
 
+  var readableTime = time.format('YYYY/MM/DD/HH:mm:ss')
+
   async.parallel(requests, function (err, results) {
     if (err) {
-      console.error('failed to fetch images', err)
+      console.error('failed to fetch images %s', readableTime)
+      console.error(err.trace)
       return
     }
 
@@ -58,44 +61,49 @@ function fetch () {
 
     for (var x = 0; x < SPLITS; x++) {
       for (var y = 0; y < SPLITS; y++) {
-        ctx.drawImage(createImage(results.shift()), x * SIZE, y * SIZE, SIZE, SIZE)
+        try {
+          ctx.drawImage(createImage(results.shift()), x * SIZE, y * SIZE, SIZE, SIZE)
+        } catch (err) {
+          console.error('failed to compose images %s %s:%s', readableTime, x, y)
+          console.error(err.stack)
+          return
+        }
       }
     }
 
     var output = format('%s.png', +new Date())
 
-    console.log('done fetching %s, saved as %s', time.format('YYYY/MM/DD/HH:mm:ss'), output)
+    console.log('done fetching %s, saved as %s', readableTime, output)
 
     canvas.createPNGStream().pipe(fs.createWriteStream(path.join(PATH, output)))
+
+    var clean = moment().subtract(7, 'minutes')
+
+    fs.readdirSync(PATH).forEach(function (file) {
+      if ('.png' != path.extname(file)) {
+        return
+      }
+
+      var time = parseInt(path.basename(file, '.png'))
+
+      if (isNaN(time)) {
+        return
+      }
+
+      time = moment(time)
+
+      if (time.isAfter(clean)) {
+        return
+      }
+
+      fs.unlinkSync(path.join(PATH, file))
+
+      console.log('cleaned file %s fetched %s', file, time.fromNow())
+    })
   })
 
 }
 
-setInterval(function () {
-  fetch()
-  var clean = moment().subtract(10, 'minutes')
-
-  fs.readdirSync(PATH).forEach(function (file) {
-    if ('.png' != path.extname(file)) {
-      return
-    }
-
-    var time = parseInt(path.basename(file, '.png'))
-
-    if (isNaN(time)) {
-      return
-    }
-
-    time = moment(time)
-
-    if (time.isAfter(clean)) {
-      return
-    }
-
-    fs.unlinkSync(path.join(PATH, file))
-
-    console.log('cleaned file %s fetched %s', file, time.fromNow())
-  })
-}, moment.duration(5, 'minutes').as('milliseconds'))
+setInterval(fetch, moment.duration(5, 'minutes').as('milliseconds'))
 
 fetch()
